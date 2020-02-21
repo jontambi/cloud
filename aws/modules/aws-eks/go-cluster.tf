@@ -39,7 +39,7 @@ resource "aws_iam_role_policy_attachment" "go-cluster-AmazonEKSServicePolicy" {
 resource "aws_security_group" "go-cluster" {
   name = "terraform-eks-go-cluster"
   description = "Cluster communication with worker nodes"
-  vpc_id = aws_vpc.go-services.id
+  vpc_id = var.vpc_id
 
   egress {
     from_port = 0
@@ -68,7 +68,7 @@ resource "aws_eks_cluster" "go-services" {
   role_arn = aws_iam_role.go-cluster.arn
   vpc_config {
     security_group_ids = [aws_security_group.go-cluster.id]
-    subnet_ids = aws_subnet.go_services[*].id
+    subnet_ids = var.subnet_id[*]
   }
 
   depends_on = [
@@ -76,15 +76,3 @@ resource "aws_eks_cluster" "go-services" {
     aws_iam_role_policy_attachment.go-cluster-AmazonEKSServicePolicy
   ]
 }
-
-
-
-
-
-
-
-
-
-
-
-

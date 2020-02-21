@@ -1,3 +1,11 @@
+#
+# VPC Resources
+#  * VPC
+#  * Subnets
+#  * Internet Gateway
+#  * Route Table
+#
+
 data "aws_availability_zones" "available" {
 
 }
@@ -5,10 +13,10 @@ data "aws_availability_zones" "available" {
 resource "aws_vpc" "go-services" {
   cidr_block = "10.0.0.0/16"
 
-  tags = {
-    "Name"                                      = "terraform-eks-go-node"
-    "kubernetes.io/cluster/${var.cluster-name}" = "shared"
-  }
+  tags = map(
+    "Name", "terraform-eks-go-node",
+    "kubernetes.io/cluster/${var.cluster-name}", "shared",
+  )
 }
 
 resource "aws_subnet" "go-services" {
@@ -18,17 +26,18 @@ resource "aws_subnet" "go-services" {
   cidr_block = "10.0.${count.index}.0/24"
   vpc_id = aws_vpc.go-services.id
 
-  tags = {
-    "Name"                                      = "terraform-eks-go-node"
-    "kubernetes.io/cluster/${var.cluster-name}" = "shared"
-  }
+  tags = map(
+    "Name", "terraform-eks-go-node",
+    "kubernetes.io/cluster/${var.cluster-name}", "shared",
+  )
+
 }
 
 resource "aws_internet_gateway" "go-services" {
   vpc_id = aws_vpc.go-services.id
 
   tags = {
-    Name = terraform-eks-go-node
+    Name = "terraform-eks-go-node"
   }
 }
 
