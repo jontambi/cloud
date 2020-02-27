@@ -54,5 +54,5 @@ resource "aws_route_table_association" "go-services" {
   count = 2
 
   route_table_id = aws_route_table.go-services.id
-  subnet_id = aws_route_table.go-services.id
+  subnet_id = aws_subnet.go-services.*.id[count.index]
 }

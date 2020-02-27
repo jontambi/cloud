@@ -9,18 +9,17 @@
 resource "aws_iam_role" "go-cluster" {
   name = "terraform-eks-go-cluster"
 
-
-  assume_role_policy = <<POLICY
+    assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
-  "Statment": [
-     {
-       "Effect": "Allow",
-       "Principal": {
-           "Service": "eks.amazonaws.com"
-       },
-       "Action": "sts:AssumRole"
-     }
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "eks.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
   ]
 }
 POLICY
@@ -66,6 +65,7 @@ resource "aws_security_group_rule" "go-cluster-ingress-workstation-https" {
 resource "aws_eks_cluster" "go-services" {
   name = var.cluster-name
   role_arn = aws_iam_role.go-cluster.arn
+
   vpc_config {
     security_group_ids = [aws_security_group.go-cluster.id]
     subnet_ids = var.subnet_id[*]
