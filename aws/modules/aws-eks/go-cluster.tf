@@ -68,11 +68,11 @@ resource "aws_eks_cluster" "go-services" {
 
   vpc_config {
     security_group_ids = [aws_security_group.go-cluster.id]
-    subnet_ids = var.subnet_id[*]
+    subnet_ids = var.subnet_id
   }
 
   depends_on = [
     aws_iam_role_policy_attachment.go-cluster-AmazonEKSClusterPolicy,
-    aws_iam_role_policy_attachment.go-cluster-AmazonEKSServicePolicy
+    aws_iam_role_policy_attachment.go-cluster-AmazonEKSServicePolicy,
   ]
 }

@@ -43,7 +43,7 @@ resource "aws_eks_node_group" "go-services" {
   cluster_name = aws_eks_cluster.go-services.name
   node_group_name = "go-services"
   node_role_arn = aws_iam_role.go-node.arn
-  subnet_ids = var.subnet_id[*]
+  subnet_ids = var.subnet_id
 
   scaling_config {
     desired_size = 1
