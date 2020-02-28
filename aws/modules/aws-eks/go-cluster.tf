@@ -6,10 +6,9 @@
 #
 
 
-resource "aws_iam_role" "go-cluster" {
-  name = "terraform-eks-go-cluster"
-
-    assume_role_policy = <<POLICY
+resource "aws_iam_role" "role-eks-cluster" {
+  name = "role-eks-go-cluster"
+  assume_role_policy = <<POLICY
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -27,12 +26,12 @@ POLICY
 
 resource "aws_iam_role_policy_attachment" "go-cluster-AmazonEKSClusterPolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role = aws_iam_role.go-cluster.name
+  role = aws_iam_role.role-eks-cluster.name
 }
 
 resource "aws_iam_role_policy_attachment" "go-cluster-AmazonEKSServicePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSServicePolicy"
-  role = aws_iam_role.go-cluster.name
+  role = aws_iam_role.role-eks-cluster.name
 }
 
 resource "aws_security_group" "go-cluster" {
@@ -64,7 +63,7 @@ resource "aws_security_group_rule" "go-cluster-ingress-workstation-https" {
 
 resource "aws_eks_cluster" "go-services" {
   name = var.cluster-name
-  role_arn = aws_iam_role.go-cluster.arn
+  role_arn = aws_iam_role.role-eks-cluster.arn
 
   vpc_config {
     security_group_ids = [aws_security_group.go-cluster.id]
