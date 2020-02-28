@@ -1,3 +1,19 @@
+output "role-eks-arn" {
+  value = aws_iam_role.role-eks-node.arn
+}
+
+output "eks-cluster-server" {
+  value = aws_eks_cluster.go-services.endpoint
+}
+
+output "eks-cluster-cert" {
+  value = aws_eks_cluster.go-services.certificate_authority.0.data
+}
+
+output "eks-cluster-name" {
+  value = aws_eks_cluster.go-services.name
+}
+
 #
 # Outputs
 #
@@ -11,7 +27,7 @@ metadata:
   namespace: kube-system
 data:
   mapRoles: |
-    - rolearn: ${aws_iam_role.go-node.arn}
+    - rolearn: ${aws_iam_role.role-eks-node.arn}
       username: system:node:{{EC2PrivateDNSName}}
       groups:
         - system:bootstrappers
